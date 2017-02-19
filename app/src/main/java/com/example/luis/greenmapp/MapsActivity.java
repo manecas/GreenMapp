@@ -60,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
-    public static final int MAX_DPACK_SIZE = 256;
+    public static final int MAX_DPACK_SIZE = 1024;
     private HashMap<String, Boolean> last_search;
     private static final int ITEMS_REQUEST = 1;
     private ArrayList<Marker> mMarkers;
@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         last_search = null;
+        mMarkers = new ArrayList<>();
     }
 
     @Override
@@ -104,9 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
-
-
 
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -311,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                         .title((String)o.get("name")));
-                                myNewMarker.setTag((Long)o.get("ref"));
+                                myNewMarker.setTag(Long.parseLong(((JSONObject)o.get("ref")).get("$numberLong").toString()));
                             }
                         });
                     }
@@ -352,11 +350,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-
     public void ShowOptions(View view)
     {
-        startActivityForResult(new Intent(MapsActivity.this, InformationActivity.class), ITEMS_REQUEST);
+        startActivityForResult(new Intent(MapsActivity.this, OptionActivity.class), ITEMS_REQUEST);
+
 //        loadNewLocations();
+
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -412,8 +411,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == ITEMS_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
+                last_search = (HashMap<String, Boolean>)getIntent().getSerializableExtra("options");
 
                 // Do something with the contact here (bigger example below)
             }
