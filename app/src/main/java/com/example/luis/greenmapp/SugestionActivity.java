@@ -89,7 +89,7 @@ public class SugestionActivity extends Activity {
     public void EnviarSugestao(View v)
     {
 
-        Toast.makeText(SugestionActivity.this, "Carregando imagem ... Aguarde", Toast.LENGTH_SHORT).show();
+
 
         if(((EditText) findViewById(R.id.et_nome)).getText().toString().length() == 0)
         {
@@ -108,6 +108,8 @@ public class SugestionActivity extends Activity {
             Toast.makeText(SugestionActivity.this, "É necessário definir uma imagem!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Toast.makeText(SugestionActivity.this, "Carregando imagem ... Aguarde", Toast.LENGTH_SHORT).show();
 
         new Thread(new Runnable() {
             @Override
