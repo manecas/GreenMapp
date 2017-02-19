@@ -44,167 +44,25 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:id="@+id/no_parque"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
             <LinearLayout
+                android:id="@+id/first_linear"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/wc"
-                    android:id="@+id/icon_wc"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bancos"
-                    android:id="@+id/icon_banco"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/lixo"
-                    android:id="@+id/icon_lixo"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/animais"
-                    android:id="@+id/icon_animais"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/musculacao"
-                    android:id="@+id/icon_exercicio"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/byke"
-                    android:id="@+id/icon_bicicletas"
-                    android:layout_weight="1" />
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rio"
-                    android:id="@+id/icon_rios"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/churrasco"
-                    android:id="@+id/icon_churrasco"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mar"
-                    android:id="@+id/icon_mar"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/sombra"
-                    android:id="@+id/icon_sombra"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/desporto"
-                    android:id="@+id/icon_desporto"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/cultura"
-                    android:id="@+id/icon_cultura"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/wcinfantil"
-                    android:id="@+id/icon_fraldario"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/deficientes"
-                    android:id="@+id/icon_deficientes"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/parquei"
-                    android:id="@+id/icon_parquei"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
+            
 
         </LinearLayout>
     </ScrollView>
