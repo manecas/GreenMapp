@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.simple.JSONObject;
 
@@ -71,6 +72,7 @@ public class SugestionActivity extends Activity {
     public void EnviarSugestao(View v)
     {
 
+        Toast.makeText(SugestionActivity.this, "Carregando imagem ... Aguarde", Toast.LENGTH_SHORT).show();
 
 
         new Thread(new Runnable() {
@@ -126,6 +128,14 @@ public class SugestionActivity extends Activity {
                     out.close();
                     in.close();
 
+
+                    SugestionActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SugestionActivity.this, "Terminado!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
