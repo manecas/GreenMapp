@@ -2,6 +2,7 @@ package com.example.luis.greenmapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import java.net.UnknownHostException;
 public class InformationActivity extends Activity {
 
     private Button button;
-    public static final int MAX_DPACK_SIZE = 256;
+    public static final int MAX_DPACK_SIZE = 1024;
     private static String my_ip = "192.168.2.112";
 
 
@@ -63,6 +64,7 @@ public class InformationActivity extends Activity {
                     socket_udp.receive(packet);
 
                     input_sock = new String(packet.getData(), 0, packet.getLength());
+                    Log.d("input_sock", input_sock);
 
                     JSONParser parser = new JSONParser();
                     o = (JSONObject) parser.parse(input_sock);

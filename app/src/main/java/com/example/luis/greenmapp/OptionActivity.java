@@ -3,6 +3,7 @@ package com.example.luis.greenmapp;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,22 +37,41 @@ public class OptionActivity extends Activity {
         ActionBar actionBar = getActionBar();
         if(actionBar != null)
             actionBar.hide();
+        options = new HashMap<>();
+    }
+
+    private void finishWithResult() {
+        Intent intent = new Intent();
+        intent.putExtra("options", options);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void OnFilterParks(View v){
+        switch (v.getId()){
+            case R.id.btnFilter:
+                finishWithResult();
+                break;
+        }
     }
 
     public void OnChangeImage(View v){
 
         switch (v.getId()){
             case R.id.wc:
-                (findViewById(R.id.wc)).setAlpha(0.5f);
                 if(options.get(WC) == null){
                     ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
                     (findViewById(R.id.wc)).setAlpha(1f);
+                    options.put(WC, true);
                 }
                 else{
                     if(options.get(WC)){
                         ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.n_wc);
+                        options.put(WC, false);
                     }else{
                         options.remove(WC);
+                        ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
+                        (findViewById(R.id.wc)).setAlpha(0.5f);
                     }
                 }
                 break;
