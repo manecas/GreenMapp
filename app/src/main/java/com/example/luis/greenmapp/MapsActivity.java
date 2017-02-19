@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -59,12 +60,15 @@ import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    public static final String PREFS_NAME = "OPTIONS_HASHMAP";
+
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
     public static final int MAX_DPACK_SIZE = 1024;
     private HashMap<String, Boolean> last_search;
     private static final int ITEMS_REQUEST = 1;
     private ArrayList<Marker> mMarkers;
+    private String lastCity = null;
 
     private static String my_ip = "192.168.2.112";
 
@@ -76,8 +80,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        last_search = null;
+        last_search = new HashMap<>();
         mMarkers = new ArrayList<>();
+        loadOptionsFromSharedPreferences();
+    }
+
+    private void loadOptionsFromSharedPreferences(){
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        for(Map.Entry<String, ?> entry : prefs.getAll().entrySet())
+            last_search.put(entry.getKey(), Boolean.parseBoolean(entry.getValue().toString()));
+
+        for (Map.Entry<String, Boolean> entry : last_search.entrySet()) {
+            Log.d("LoadOnStart", entry.getKey() + " " + entry.getValue());
+        }
     }
 
     @Override
@@ -225,23 +240,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         EditText edtLocation = (EditText) findViewById(R.id.edtLocation);
-        String location = edtLocation.getText().toString();
-        List<Address> addressList = null;
-        Geocoder geocoder = new Geocoder(this);
-        try {
-            addressList = geocoder.getFromLocationName(location, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        if(addressList != null) {
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+        if(edtLocation.getText().toString().length() > 0) {
+
+            String location = edtLocation.getText().toString();
+            lastCity = location;
+            List<Address> addressList = null;
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (addressList != null) {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+                loadNewLocations(edtLocation.getText().toString());
+            }
+            //
+            edtLocation.getText().clear();
         }
-        loadNewLocations(edtLocation.getText().toString());
-        //
-        edtLocation.getText().clear();
     }
 
     public void loadNewLocations(final String city)
@@ -258,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONObject json = new JSONObject();
                     json.put("type", "search");
                     json.put("city_name", city);
-                    if(last_search == null)
+                    if(last_search.isEmpty())
                     {
                         json.put("wants", null);
                         json.put("nwants", null);
@@ -388,6 +408,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (Map.Entry<String, Boolean> entry : last_search.entrySet()) {
                             Log.d("hashmap", entry.getKey() + " " + entry.getValue());
                         }
+                    }
+
+                    if(lastCity != null){
+                        loadNewLocations(lastCity);
                     }
                 }catch(ClassCastException e){
                     e.printStackTrace();

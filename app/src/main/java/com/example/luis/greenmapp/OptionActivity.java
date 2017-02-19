@@ -162,16 +162,16 @@ public class OptionActivity extends Activity {
                 break;
             case R.id.musculacao:
                 if(options.get(MUSCULACAO) == null){
-                    ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.c_animais);
+                    ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.c_musculacao);
                     options.put(MUSCULACAO, true);
                 }
                 else{
                     if(options.get(MUSCULACAO)){
-                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.n_animais);
+                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.n_musculacao);
                         options.put(MUSCULACAO, false);
                     }else{
                         options.remove(MUSCULACAO);
-                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.animais);
+                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.musculacao);
                     }
                 }
                 break;
@@ -202,6 +202,21 @@ public class OptionActivity extends Activity {
                     }else{
                         options.remove(RIO);
                         ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.rio);
+                    }
+                }
+                break;
+            case R.id.mar:
+                if(options.get(MAR) == null){
+                    ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.c_mar);
+                    options.put(MAR, true);
+                }
+                else{
+                    if(options.get(MAR)){
+                        ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.n_mar);
+                        options.put(MAR, false);
+                    }else{
+                        options.remove(MAR);
+                        ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.mar);
                     }
                 }
                 break;
@@ -251,12 +266,64 @@ public class OptionActivity extends Activity {
                 }
                 break;
             case R.id.cultura:
+                if(options.get(CULTURA) == null){
+                    ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.c_cultura);
+                    options.put(CULTURA, true);
+                }
+                else{
+                    if(options.get(CULTURA)){
+                        ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.n_cultura);
+                        options.put(CULTURA, false);
+                    }else{
+                        options.remove(CULTURA);
+                        ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.cultura);
+                    }
+                }
                 break;
             case R.id.fraldario:
+                if(options.get(FRALDARIO) == null){
+                    ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.c_wcinfantil);
+                    options.put(FRALDARIO, true);
+                }
+                else{
+                    if(options.get(FRALDARIO)){
+//                        ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.);
+                        options.put(FRALDARIO, false);
+                    }else{
+                        options.remove(FRALDARIO);
+                        ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.wcinfantil);
+                    }
+                }
                 break;
             case R.id.deficientes:
+                if(options.get(DEFICIENTES) == null){
+                    ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.c_deficientes);
+                    options.put(DEFICIENTES, true);
+                }
+                else{
+                    if(options.get(DEFICIENTES)){
+                        ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.n_deficientes);
+                        options.put(DEFICIENTES, false);
+                    }else{
+                        options.remove(DEFICIENTES);
+                        ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.deficientes);
+                    }
+                }
                 break;
             case R.id.parquei:
+                if(options.get(PARQUE_INFANTIL) == null){
+                    ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.c_parque);
+                    options.put(PARQUE_INFANTIL, true);
+                }
+                else{
+                    if(options.get(PARQUE_INFANTIL)){
+                        ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.n_parque);
+                        options.put(PARQUE_INFANTIL, false);
+                    }else{
+                        options.remove(PARQUE_INFANTIL);
+                        ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.parque);
+                    }
+                }
                 break;
         }
     }
