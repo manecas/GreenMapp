@@ -193,10 +193,14 @@ public class InformationActivity extends Activity {
 
                             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
-                            ImageView myImage = (ImageView) findViewById(R.id.img_parque);
+                            ImageView myImage = (ImageView) findViewById(R.id.parq_image);
 
                             myImage.setImageBitmap(myBitmap);
 
+                        }
+                        else
+                        {
+                            Log.d("fdghj", "no image");
                         }
                     }
                 });
