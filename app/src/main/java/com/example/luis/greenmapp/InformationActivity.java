@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 public class InformationActivity extends Activity {
 
@@ -36,6 +38,23 @@ public class InformationActivity extends Activity {
     private Integer[][] ids = new Integer[15][2];
     private String[] mensagem = new String[15];
     private static String my_ip = "192.168.2.112";
+
+
+    public static final String WC = "WC";
+    public static final String BANCOS = "BANCOS";
+    public static final String LIXO = "LIXO";
+    public static final String ANIMAIS = "ANIMAIS";
+    public static final String MUSCULACAO = "MUSCULACAO";
+    public static final String BICICLETAS = "BICICLETAS";
+    public static final String RIO = "RIO";
+    public static final String CHURRASCO = "CHURRASCO";
+    public static final String MAR = "MAR";
+    public static final String SOMBRA = "SOMBRA";
+    public static final String DESPORTO = "DESPORTO";
+    public static final String CULTURA = "CULTURA";
+    public static final String FRALDARIO = "FRALDARIO";
+    public static final String DEFICIENTES = "DEFICIENTES";
+    public static final String PARQUE_INFANTIL = "PARQUE_INFANTIL";
   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +159,38 @@ public class InformationActivity extends Activity {
                         Log.d("nome", (String)fo.get("name"));
                         ((TextView)findViewById(R.id.sin)).setText((String)fo.get("name"));
 
+                        int t = 0;
+
+                        LinearLayout last_linear;
+                        last_linear = (LinearLayout)findViewById(R.id.first_linear) ;
+                        //LinearLayout linear_no_parque;
+                        //linear_no_parque = (LinearLayout)findViewById(R.id.no_parque) ;
                         //
                         File imgFile = new File(getApplicationContext().getFilesDir(), "picture.jpg");
+                        ArrayList<String> dd = (ArrayList<String>)fo.get("contains");
+                        while(t++ < dd.size())
+                        {
+                            /*if(t%3 == 0)
+                            {
+                                LinearLayout layout = new LinearLayout(InformationActivity.this);
+                                layout.setOrientation(LinearLayout.VERTICAL);
+                                layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+                                //adicionar
+                                linear_no_parque.addView(layout);
+                                last_linear = layout;
+                            }*/
+
+                            String ss = dd.get(t);
+                            ImageView img = new ImageView(InformationActivity.this);
+                            img.setImageResource(R.drawable.wc);
+                            if(ss.equals(WC)) last_linear.addView(img);
+                            img = new ImageView(InformationActivity.this);
+                            img.setImageResource(R.drawable.bancos);
+                            if(ss.equals(BANCOS)) last_linear.addView(img);
+                            img = new ImageView(InformationActivity.this);
+                            img.setImageResource(R.drawable.lixo);
+                            if(ss.equals(LIXO)) last_linear.addView(img);
+                        }
 
                         if(imgFile.exists()){
 
