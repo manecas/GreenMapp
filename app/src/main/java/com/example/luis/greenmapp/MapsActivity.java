@@ -51,14 +51,18 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
     public static final int MAX_DPACK_SIZE = 256;
-    private String last_search;
+    private HashMap<String, Boolean> last_search;
+    private static final int ITEMS_REQUEST = 1;
 
     private static String my_ip = "192.168.2.112";
 
@@ -225,10 +229,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
         }
+        loadNewLocations(edtLocation.getText().toString());
+        //
         edtLocation.getText().clear();
     }
 
-    public void loadNewLocations()
+    public void loadNewLocations(final String city)
     {
         new Thread(new Runnable()
         {
@@ -241,7 +247,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONArray jsonarray;
                     JSONObject json = new JSONObject();
                     json.put("type", "search");
-                    json.put("city_name", "Coimbra");
+                    json.put("city_name", city);
+                    if(last_search == null)
+                    {
+                        json.put("wants", null);
+                        json.put("nwants", null);
+                    }
+                    else
+                    {
+                        ArrayList<String> wants = new ArrayList<>();
+                        ArrayList<String> nwants = new ArrayList<>();
+                        for(Map.Entry<String, Boolean> entry : last_search.entrySet())
+                        {
+                            String key = entry.getKey();
+                            Boolean value = entry.getValue();
+
+                            if(value)
+                            {
+                                wants.add(key);
+                            }
+                            else
+                            {
+                                nwants.add(key);
+                            }
+                        }
+                        json.put("wants", wants);
+                        json.put("nwants", nwants);
+                    }
                     DatagramSocket socket_udp = new DatagramSocket();
                     DatagramPacket packet;
                     packet = new DatagramPacket(json.toJSONString().getBytes(),
@@ -266,11 +298,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void run()
                             {
-                                Marker mSydney;
-                                mSydney = mMap.addMarker(new MarkerOptions()
+                                Marker myNewMarker;
+                                myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                         .title((String)o.get("name")));
-                                mSydney.setTag(0);
+                                myNewMarker.setTag(0);
                             }
                         });
                     }
@@ -309,7 +341,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ShowOptions(View view)
     {
-        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+        startActivityForResult(new Intent(MapsActivity.this, InformationActivity.class), ITEMS_REQUEST);
 //        loadNewLocations();
 //        new Thread(new Runnable() {
 //            @Override
@@ -360,4 +392,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        }).start();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == ITEMS_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
+    }
 }
