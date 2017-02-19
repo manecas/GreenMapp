@@ -76,54 +76,6 @@ public class InformationActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                try {
-                    JSONObject json = new JSONObject();
-                    json.put("type", "see");
-                    Log.d("log-print","a");
-                    DatagramSocket socket_udp = new DatagramSocket();
-                    DatagramPacket packet;
-                    Log.d("dgbfhj", json.toJSONString());
-                    Log.d("dgbfhj", json.toString());
-                    packet = new DatagramPacket(json.toJSONString().getBytes(),
-                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                    socket_udp.send(packet);
-                    //
-                    Socket socket;
-                    socket = new Socket(my_ip, 3434);
-
-                    File file = new File(getApplicationContext().getFilesDir(), "picture.jpg");
-                    if(file.exists())
-                        file.delete();
-
-                    InputStream in = socket.getInputStream();
-                    FileOutputStream out = openFileOutput("picture.jpg", Activity.MODE_PRIVATE);
-
-                    //
-                    byte[] buf = new byte[8192];
-                    int len = 0;
-                    int contador = 0;
-                    while ((len = in.read(buf)) != -1)
-                    {
-                        System.out.println("Recebido o bloco n. " + ++contador + " com " + len + " bytes.");
-                        out.write(buf, 0, len);
-                        out.flush();
-                        System.out.println("Acrescentados " + len + " bytes.");
-                    }
-                    //
-                    out.close();
-                    in.close();
-                    Log.d("desfgh", "downloaded");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 JSONObject o = new JSONObject();
                 try {
 
@@ -184,6 +136,8 @@ public class InformationActivity extends Activity {
                 InformationActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("ola", fo.toJSONString());
+                        Log.d("nome", (String)fo.get("name"));
                         ((TextView)findViewById(R.id.sin)).setText((String)fo.get("name"));
 
                         //

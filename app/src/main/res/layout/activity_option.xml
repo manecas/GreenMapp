@@ -47,7 +47,6 @@
                     android:src="@drawable/wc"
                     android:id="@+id/wc"
                     android:onClick="OnChangeImage"
-                    android:alpha="0.5"
                     android:layout_weight="1" />
 
                 <ImageView
@@ -183,7 +182,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/fraldario"
+                    android:src="@drawable/wcinfantil"
                     android:id="@+id/fraldario"
                     android:onClick="OnChangeImage"
                     android:layout_weight="1" />

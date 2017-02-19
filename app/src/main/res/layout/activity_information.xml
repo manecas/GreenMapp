@@ -13,8 +13,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@drawable/parque"
+            android:src="@drawable/parque"
             android:id="@+id/parq_image"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -196,7 +197,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/fraldario"
+                    android:src="@drawable/wcinfantil"
                     android:id="@+id/icon_fraldario"
                     android:layout_weight="1" />
 
