@@ -54,6 +54,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -133,6 +134,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try{
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+
+                Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
+                List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                if (addresses.size() > 0)
+                    loadNewLocations(addresses.get(0).getLocality());
+
             }catch(Exception e){
                 e.printStackTrace();
                 Toast.makeText(MapsActivity.this, "Location not found!", Toast.LENGTH_LONG).show();
