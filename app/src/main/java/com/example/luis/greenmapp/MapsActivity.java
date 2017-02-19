@@ -51,14 +51,19 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
     public static final int MAX_DPACK_SIZE = 256;
-    private String last_search;
+    private HashMap<String, Boolean> last_search;
+    private static final int ITEMS_REQUEST = 1;
+    private ArrayList<Marker> mMarkers;
 
     private static String my_ip = "192.168.2.112";
 
@@ -74,75 +79,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         mMap = googleMap;
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+        mMap.setOnMarkerClickListener(this);
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener()
+        {
             @Override
-            public void onCameraMove() {
-                Log.d("onCameraMoveCanceled", "canceled");
+            public void onCameraIdle()
+            {
+                Log.d("idle", "idle");
             }
         });
-//        mMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
-//            @Override
-//            public void onCameraMoveCanceled() {
-//                Log.d("onCameraMoveCanceled", "canceled");
-//                if(last_search != null)
-//                {
-//                    //loadNewLocations();
-//                    Toast.makeText(MapsActivity.this, "Move", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener()
         {
             @Override
             public void onMapLongClick(LatLng latLng)
             {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try
-                        {
-
-                            JSONObject json = new JSONObject();
-                            json.put("type", "pnew");
-                            Log.d("log-print","a");
-                            DatagramSocket socket_udp = new DatagramSocket();
-                            DatagramPacket packet;
-                            Log.d("dgbfhj", json.toJSONString());
-                            Log.d("dgbfhj", json.toString());
-                            packet = new DatagramPacket(json.toJSONString().getBytes(),
-                                    json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                            socket_udp.send(packet);
-
-                            Socket socket;
-                            socket = new Socket(my_ip, 3434);
-
-                            InputStream in = new FileInputStream(new File(getApplicationContext().getFilesDir(), "picture.jpg"));
-                            OutputStream out = socket.getOutputStream();
-                            //
-                            byte[] buf = new byte[8192];
-                            int len = 0;
-                            while ((len = in.read(buf)) != -1)
-                            {
-                                out.write(buf, 0, len);
-                            }
-                            //
-                            out.close();
-                            in.close();
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                //
 
                 Toast.makeText(MapsActivity.this, "Long", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
 
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -266,10 +230,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
         }
+        loadNewLocations(edtLocation.getText().toString());
+        //
         edtLocation.getText().clear();
     }
 
-    public void loadNewLocations()
+    public void loadNewLocations(final String city)
     {
         new Thread(new Runnable()
         {
@@ -282,7 +248,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONArray jsonarray;
                     JSONObject json = new JSONObject();
                     json.put("type", "search");
-                    json.put("city_name", "Coimbra");
+                    json.put("city_name", city);
+                    if(last_search == null)
+                    {
+                        json.put("wants", null);
+                        json.put("nwants", null);
+                    }
+                    else
+                    {
+                        ArrayList<String> wants = new ArrayList<>();
+                        ArrayList<String> nwants = new ArrayList<>();
+                        for(Map.Entry<String, Boolean> entry : last_search.entrySet())
+                        {
+                            String key = entry.getKey();
+                            Boolean value = entry.getValue();
+
+                            if(value)
+                            {
+                                wants.add(key);
+                            }
+                            else
+                            {
+                                nwants.add(key);
+                            }
+                        }
+                        json.put("wants", wants);
+                        json.put("nwants", nwants);
+                    }
                     DatagramSocket socket_udp = new DatagramSocket();
                     DatagramPacket packet;
                     packet = new DatagramPacket(json.toJSONString().getBytes(),
@@ -293,37 +285,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     socket_udp.receive(packet);
 
                     input_sock = new String(packet.getData(), 0, packet.getLength());
-                    Log.d("Sai do ciclo", input_sock);
                     jsonarray = new JSONArray(input_sock);
 
-                    //
+                    //clear all
+
+                    for (Marker marker: mMarkers)
+                    {
+                        marker.remove();
+                    }
+                    mMarkers.clear();
 
                     //show new locations on map
-                    Log.d("Sai do ciclo", "Sai do cliclo");
+
                     for(int x = 0; x < jsonarray.length(); x++)
                     {
                         JSONParser parser = new JSONParser();
                         final JSONObject o = (JSONObject) parser.parse(jsonarray.get(x).toString());
-                        MapsActivity.this.runOnUiThread(new Runnable() {
+
+                        MapsActivity.this.runOnUiThread(new Runnable()
+                        {
                             @Override
-                            public void run() {
-                                Marker mSydney;
-                                mSydney = mMap.addMarker(new MarkerOptions()
+                            public void run()
+                            {
+                                Marker myNewMarker;
+                                myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
-                                        .title("Sydney"));
-                                mSydney.setTag(0);
-                                Log.d("LatLng", ((double)o.get("lat")) + " ");
+                                        .title((String)o.get("name")));
+                                myNewMarker.setTag((Long)o.get("ref"));
                             }
                         });
-
                     }
-                    Log.d("Sai do ciclo", "Sai do cliclo");
 
                 }
-                catch (IOException | JSONException e)
+                catch (IOException | JSONException | ParseException e)
                 {
-                    e.printStackTrace();
-                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
@@ -331,10 +326,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }).start();
     }
 
+    public boolean onMarkerClick(final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Long ref = (Long) marker.getTag();
+
+        // Check if a click count was set, then display the click count.
+
+        Intent intent = new Intent(MapsActivity.this, InformationActivity.class);
+        intent.putExtra("ref", ref);
+        startActivity(intent);
+
+        /*if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+            Toast.makeText(this,
+                    marker.getTitle() +
+                            " has been clicked " + clickCount + " times.",
+                    Toast.LENGTH_SHORT).show();
+        }*/
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
+    }
+
 
     public void ShowOptions(View view)
     {
-        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+        startActivityForResult(new Intent(MapsActivity.this, InformationActivity.class), ITEMS_REQUEST);
 //        loadNewLocations();
 //        new Thread(new Runnable() {
 //            @Override
@@ -385,4 +406,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        }).start();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == ITEMS_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
+    }
 }
