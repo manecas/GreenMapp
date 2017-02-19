@@ -43,7 +43,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".OptionActivity" />
-        <activity android:name=".SugestionActivity"></activity>
+        <activity android:name=".SugestionActivity" />
+        <activity android:name=".SplashActivity"></activity>
     </application>
 
 </manifest>
