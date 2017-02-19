@@ -183,7 +183,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wcinfantil"
+                    android:src="@drawable/fraldario"
                     android:id="@+id/fraldario"
                     android:onClick="OnChangeImage"
                     android:layout_weight="1" />
