@@ -369,8 +369,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == ITEMS_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                last_search = (HashMap<String, Boolean>)getIntent().getSerializableExtra("options");
-
+                try {
+                    last_search = (HashMap<String, Boolean>) data.getSerializableExtra("options");
+                    if (last_search != null){
+                        for (Map.Entry<String, Boolean> entry : last_search.entrySet()) {
+                            Log.d("hashmap", entry.getKey() + " " + entry.getValue());
+                        }
+                    }
+                }catch(ClassCastException e){
+                    e.printStackTrace();
+                }
                 // Do something with the contact here (bigger example below)
             }
         }
