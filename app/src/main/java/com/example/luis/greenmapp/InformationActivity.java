@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -167,7 +169,7 @@ public class InformationActivity extends Activity {
                         //linear_no_parque = (LinearLayout)findViewById(R.id.no_parque) ;
                         //
                         File imgFile = new File(getApplicationContext().getFilesDir(), "picture.jpg");
-                        ArrayList<String> dd = (ArrayList<String>)fo.get("contains");
+                        ArrayList<JSONArray> dd = (ArrayList<JSONArray>)fo.get("contains");
                         while(t++ < dd.size())
                         {
                             /*if(t%3 == 0)
@@ -179,17 +181,24 @@ public class InformationActivity extends Activity {
                                 linear_no_parque.addView(layout);
                                 last_linear = layout;
                             }*/
+                                Log.d("sdr", dd.get(t - 1).toJSONString());
+                                JSONArray jsonArray = (JSONArray)dd.get(t - 1);
+                                Log.d("sdr", jsonArray.toString());
+                                Log.d("sdr", jsonArray.get(0).toString());
+                                ImageView img;
 
-                            String ss = dd.get(t);
-                            ImageView img = new ImageView(InformationActivity.this);
-                            img.setImageResource(R.drawable.wc);
-                            if(ss.equals(WC)) last_linear.addView(img);
-                            img = new ImageView(InformationActivity.this);
-                            img.setImageResource(R.drawable.bancos);
-                            if(ss.equals(BANCOS)) last_linear.addView(img);
-                            img = new ImageView(InformationActivity.this);
-                            img.setImageResource(R.drawable.lixo);
-                            if(ss.equals(LIXO)) last_linear.addView(img);
+                                for(int i = 0; i < jsonArray.size(); i++)
+                                {
+                                    img = new ImageView(InformationActivity.this);
+                                    img.setImageResource(R.drawable.wc);
+                                    if(jsonArray.get(i).toString().equals(WC)) last_linear.addView(img);
+                                    img = new ImageView(InformationActivity.this);
+                                    img.setImageResource(R.drawable.bancos);
+                                    if(jsonArray.get(i).toString().equals(BANCOS)) last_linear.addView(img);
+                                    img = new ImageView(InformationActivity.this);
+                                    img.setImageResource(R.drawable.lixo);
+                                    if(jsonArray.get(i).toString().equals(LIXO)) last_linear.addView(img);
+                                }
                         }
 
                         if(imgFile.exists()){

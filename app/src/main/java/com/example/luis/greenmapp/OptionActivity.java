@@ -444,7 +444,7 @@ public class OptionActivity extends Activity {
                 }
                 else{
                     if(options.get(FRALDARIO)){
-//                        ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.);
+                        ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.n_fraldario);
                         options.put(FRALDARIO, false);
                     }else{
                         options.remove(FRALDARIO);
