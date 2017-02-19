@@ -100,8 +100,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapLongClick(LatLng latLng)
             {
                 //
+                Intent intent = new Intent(MapsActivity.this, SugestionActivity.class);
+                intent.putExtra("lat", latLng.latitude);
+                intent.putExtra("longi", latLng.longitude);
+                startActivity(intent);
 
-                Toast.makeText(MapsActivity.this, "Long", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MapsActivity.this, "Long", Toast.LENGTH_SHORT).show();
 
             }
         });
