@@ -18,20 +18,20 @@
             android:layout_weight="5"
             android:hint="Some location..." />
 
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton2"
+            android:layout_height="match_parent"
+            android:src="@drawable/places_ic_search"
+            android:id="@+id/imageView"
             android:layout_weight="1"
-            android:text="Go To"
             android:onClick="OnSearchLocation" />
 
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/btn_star_big_off"
+            android:id="@+id/imageView2"
             android:layout_weight="1"
-            android:text="Options"
             android:onClick="ShowOptions" />
 
     </LinearLayout>

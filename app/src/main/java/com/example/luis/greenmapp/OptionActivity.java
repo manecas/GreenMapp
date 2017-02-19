@@ -321,7 +321,7 @@ public class OptionActivity extends Activity {
                         options.put(PARQUE_INFANTIL, false);
                     }else{
                         options.remove(PARQUE_INFANTIL);
-                        ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.parque);
+                        ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.parquei);
                     }
                 }
                 break;
