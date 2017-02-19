@@ -20,16 +20,16 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_set_as"
+            android:layout_height="match_parent"
+            android:src="@drawable/places_ic_search"
             android:id="@+id/imageView"
             android:layout_weight="1"
             android:onClick="OnSearchLocation" />
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_search"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/btn_star_big_off"
             android:id="@+id/imageView2"
             android:layout_weight="1"
             android:onClick="ShowOptions" />
