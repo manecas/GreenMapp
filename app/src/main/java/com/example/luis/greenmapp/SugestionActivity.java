@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import org.json.simple.JSONObject;
@@ -33,10 +34,26 @@ public class SugestionActivity extends Activity {
     public static final int MAX_DPACK_SIZE = 1024;
     private static String my_ip = "192.168.2.112";
 
+    public static final String WC = "WC";
+    public static final String BANCOS = "BANCOS";
+    public static final String LIXO = "LIXO";
+    public static final String ANIMAIS = "ANIMAIS";
+    public static final String MUSCULACAO = "MUSCULACAO";
+    public static final String BICICLETAS = "BICICLETAS";
+    public static final String RIO = "RIO";
+    public static final String CHURRASCO = "CHURRASCO";
+    public static final String MAR = "MAR";
+    public static final String SOMBRA = "SOMBRA";
+    public static final String DESPORTO = "DESPORTO";
+    public static final String CULTURA = "CULTURA";
+    public static final String FRALDARIO = "FRALDARIO";
+    public static final String DEFICIENTES = "DEFICIENTES";
+    public static final String PARQUE_INFANTIL = "PARQUE_INFANTIL";
+
     Double lat;
     Double longi;
 
-    Uri uri_image;
+    Uri uri_image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +91,23 @@ public class SugestionActivity extends Activity {
 
         Toast.makeText(SugestionActivity.this, "Carregando imagem ... Aguarde", Toast.LENGTH_SHORT).show();
 
+        if(((EditText) findViewById(R.id.et_nome)).getText().toString().length() == 0)
+        {
+            Toast.makeText(SugestionActivity.this, "É necessário definir um nome!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(((EditText) findViewById(R.id.et_cidade)).getText().toString().length() == 0)
+        {
+            Toast.makeText(SugestionActivity.this, "É necessário definir uma cidade!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(uri_image == null)
+        {
+            Toast.makeText(SugestionActivity.this, "É necessário definir uma imagem!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -81,14 +115,19 @@ public class SugestionActivity extends Activity {
                 try {
                     String nome = ((EditText) findViewById(R.id.et_nome)).getText().toString();
                     String cidade = ((EditText) findViewById(R.id.et_cidade)).getText().toString();
-                    String contains_o = ((EditText) findViewById(R.id.et_contem)).getText().toString();
+                    //String contains_o = ((EditText) findViewById(R.id.et_contem)).getText().toString();
 
+                    ArrayList<String> contem = new ArrayList<>();
+                    if(((Switch)findViewById(R.id.swc)).isChecked()) contem.add(WC);
+                    if(((Switch)findViewById(R.id.sbancos)).isChecked()) contem.add(BANCOS);
+                    if(((Switch)findViewById(R.id.sclixo)).isChecked()) contem.add(LIXO);
+                    if(((Switch)findViewById(R.id.spanimais)).isChecked()) contem.add(ANIMAIS);
 
                     JSONObject json;
                     DatagramSocket socket_udp;
                     DatagramPacket packet;
 
-                    String[] marr = contains_o.split(",");
+                    //String[] marr = contains_o.split(",");
 
                     json = new JSONObject();
                     json.put("type", "new");
@@ -96,22 +135,14 @@ public class SugestionActivity extends Activity {
                     json.put("city", cidade);
                     json.put("lat", lat);
                     json.put("long", longi);
-                    json.put("contains", Arrays.asList(marr));
+                    json.put("contains", Arrays.asList(contem));//Arrays.asList(marr));
 
                     socket_udp = new DatagramSocket();
                     packet = new DatagramPacket(json.toJSONString().getBytes(),
                             json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
                     socket_udp.send(packet);
 
-                    /*json = new JSONObject();
-                    json.put("type", "pnew");
-                    Log.d("log-print", "a");
-                    socket_udp = new DatagramSocket();
-                    Log.d("dgbfhj", json.toJSONString());
-                    Log.d("dgbfhj", json.toString());
-                    packet = new DatagramPacket(json.toJSONString().getBytes(),
-                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                    socket_udp.send(packet);*/
+                    //
 
                     Socket socket;
                     socket = new Socket(my_ip, 3434);
