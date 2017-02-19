@@ -305,22 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ShowOptions(View view)
     {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.activity_information);
-
-//        Button dialogButtonOk = (Button) dialog.findViewById(R.id.button_ok);
-//        dialogButtonOk.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//
-//            }
-//        });
-
-        dialog.show();
+        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
 
         new Thread(new Runnable() {
             @Override
