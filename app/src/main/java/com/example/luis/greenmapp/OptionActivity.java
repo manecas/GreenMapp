@@ -102,7 +102,7 @@ public class OptionActivity extends Activity {
         switch (v.getId()){
             case R.id.wc:
                 if(options.get(WC) == null){
-                    ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
+                    ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.c_wc);
                     options.put(WC, true);
                 }
                 else{
@@ -116,22 +116,139 @@ public class OptionActivity extends Activity {
                 }
                 break;
             case R.id.bancos:
+                if(options.get(BANCOS) == null){
+                    ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.c_bancos);
+                    options.put(BANCOS, true);
+                }
+                else{
+                    if(options.get(BANCOS)){
+                        ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.n_bancos);
+                        options.put(BANCOS, false);
+                    }else{
+                        options.remove(BANCOS);
+                        ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.bancos);
+                    }
+                }
                 break;
             case R.id.lixo:
+                if(options.get(LIXO) == null){
+                    ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.c_lixo);
+                    options.put(LIXO, true);
+                }
+                else{
+                    if(options.get(LIXO)){
+                        ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.n_lixo);
+                        options.put(LIXO, false);
+                    }else{
+                        options.remove(LIXO);
+                        ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.lixo);
+                    }
+                }
                 break;
             case R.id.animais:
+                if(options.get(ANIMAIS) == null){
+                    ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.c_animais);
+                    options.put(ANIMAIS, true);
+                }
+                else{
+                    if(options.get(ANIMAIS)){
+                        ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.n_animais);
+                        options.put(ANIMAIS, false);
+                    }else{
+                        options.remove(ANIMAIS);
+                        ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.animais);
+                    }
+                }
                 break;
             case R.id.musculacao:
+                if(options.get(MUSCULACAO) == null){
+                    ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.c_animais);
+                    options.put(MUSCULACAO, true);
+                }
+                else{
+                    if(options.get(MUSCULACAO)){
+                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.n_animais);
+                        options.put(MUSCULACAO, false);
+                    }else{
+                        options.remove(MUSCULACAO);
+                        ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.animais);
+                    }
+                }
                 break;
             case R.id.bicicletas:
+                if(options.get(BICICLETAS) == null){
+                    ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.c_byke);
+                    options.put(BICICLETAS, true);
+                }
+                else{
+                    if(options.get(BICICLETAS)){
+                        ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.n_byke);
+                        options.put(BICICLETAS, false);
+                    }else{
+                        options.remove(BICICLETAS);
+                        ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.byke);
+                    }
+                }
                 break;
             case R.id.rio:
+                if(options.get(RIO) == null){
+                    ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.c_rio);
+                    options.put(RIO, true);
+                }
+                else{
+                    if(options.get(RIO)){
+                        ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.n_rio);
+                        options.put(RIO, false);
+                    }else{
+                        options.remove(RIO);
+                        ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.rio);
+                    }
+                }
                 break;
             case R.id.churrasco:
+                if(options.get(CHURRASCO) == null){
+                    ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.c_churrasco);
+                    options.put(CHURRASCO, true);
+                }
+                else{
+                    if(options.get(CHURRASCO)){
+                        ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.n_churrasco);
+                        options.put(CHURRASCO, false);
+                    }else{
+                        options.remove(CHURRASCO);
+                        ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.churrasco);
+                    }
+                }
                 break;
             case R.id.sombra:
+                if(options.get(SOMBRA) == null){
+                    ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.c_sombra);
+                    options.put(SOMBRA, true);
+                }
+                else{
+                    if(options.get(SOMBRA)){
+                        ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.n_sombra);
+                        options.put(SOMBRA, false);
+                    }else{
+                        options.remove(SOMBRA);
+                        ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.sombra);
+                    }
+                }
                 break;
             case R.id.desporto:
+                if(options.get(DESPORTO) == null){
+                    ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.c_desporto);
+                    options.put(DESPORTO, true);
+                }
+                else{
+                    if(options.get(DESPORTO)){
+                        ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.n_desporto);
+                        options.put(DESPORTO, false);
+                    }else{
+                        options.remove(DESPORTO);
+                        ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.desporto);
+                    }
+                }
                 break;
             case R.id.cultura:
                 break;

@@ -18,21 +18,21 @@
             android:layout_weight="5"
             android:hint="Some location..." />
 
-        <ImageButton
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_set_as"
             android:id="@+id/imageButton2"
             android:layout_weight="1"
-            android:onClick="OnSearchLocation (MapsActivity)" />
+            android:text="Go To"
+            android:onClick="OnSearchLocation" />
 
-        <ImageButton
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_search"
             android:id="@+id/imageButton"
             android:layout_weight="1"
-            android:onClick="ShowOptions (MapsActivity)" />
+            android:text="Options"
+            android:onClick="ShowOptions" />
 
     </LinearLayout>
 
