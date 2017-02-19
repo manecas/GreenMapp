@@ -309,8 +309,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ShowOptions(View view)
     {
-        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+//        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+        startActivity(new Intent(MapsActivity.this, OptionActivity.class));
 //        loadNewLocations();
+
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
