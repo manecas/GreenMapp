@@ -60,7 +60,7 @@ public class InformationActivity extends Activity {
 //        imagens[14]  = (ImageView) findViewById(R.id.icon_parquei);
 //        validaExistencia();
 //        insereMensagensIcons();
-        registaListeners();
+//        registaListeners();
         final Long ref;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -205,15 +205,15 @@ public class InformationActivity extends Activity {
         }).start();
     }
 
-    protected void registaListeners(){
-        for(int i = 0; i < 15; i++)
-            registaListenerImagem(imagens[i], mensagem[i]);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //JDialog com cena...
-            }
-        });
-    }
+//    protected void registaListeners(){
+//        for(int i = 0; i < 15; i++)
+//            registaListenerImagem(imagens[i], mensagem[i]);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                //JDialog com cena...
+//            }
+//        });
+//    }
 
 //    protected void validaExistencia(){
 //        existe[0] = true;
@@ -308,14 +308,14 @@ public class InformationActivity extends Activity {
 //        ids[14][1] = R.drawable.parquei;
 //    }
 
-    protected void registaListenerImagem(ImageView imagem, final String strt){
-        imagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast(strt);
-            }
-        });
-    }
+//    protected void registaListenerImagem(ImageView imagem, final String strt){
+//        imagem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showToast(strt);
+//            }
+//        });
+//    }
 
     protected void showToast(String valor){
         Toast.makeText(InformationActivity.this, valor, Toast.LENGTH_SHORT).show();

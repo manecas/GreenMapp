@@ -71,72 +71,64 @@ public class SugestionActivity extends Activity {
     public void EnviarSugestao(View v)
     {
 
-        try
-        {
-            String nome = ((EditText)findViewById(R.id.et_nome)).getText().toString();
-            String cidade = ((EditText)findViewById(R.id.et_cidade)).getText().toString();
-            String contains_o = ((EditText)findViewById(R.id.et_contem)).getText().toString();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try
-                    {
 
-                        JSONObject json = new JSONObject();
-                        json.put("type", "pnew");
-                        Log.d("log-print","a");
-                        DatagramSocket socket_udp = new DatagramSocket();
-                        DatagramPacket packet;
-                        Log.d("dgbfhj", json.toJSONString());
-                        Log.d("dgbfhj", json.toString());
-                        packet = new DatagramPacket(json.toJSONString().getBytes(),
-                                json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                        socket_udp.send(packet);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String nome = ((EditText) findViewById(R.id.et_nome)).getText().toString();
+                    String cidade = ((EditText) findViewById(R.id.et_cidade)).getText().toString();
+                    String contains_o = ((EditText) findViewById(R.id.et_contem)).getText().toString();
 
-                        Socket socket;
-                        socket = new Socket(my_ip, 3434);
 
-                        InputStream in = new FileInputStream(new File(uri_image.getPath()));
-                        OutputStream out = socket.getOutputStream();
-                        //
-                        byte[] buf = new byte[8192];
-                        int len = 0;
-                        while ((len = in.read(buf)) != -1)
-                        {
-                            out.write(buf, 0, len);
-                        }
-                        //
-                        out.close();
-                        in.close();
+                    JSONObject json = new JSONObject();
+                    json.put("type", "pnew");
+                    Log.d("log-print", "a");
+                    DatagramSocket socket_udp = new DatagramSocket();
+                    DatagramPacket packet;
+                    Log.d("dgbfhj", json.toJSONString());
+                    Log.d("dgbfhj", json.toString());
+                    packet = new DatagramPacket(json.toJSONString().getBytes(),
+                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
+                    socket_udp.send(packet);
+
+                    Socket socket;
+                    socket = new Socket(my_ip, 3434);
+
+                    InputStream in = getContentResolver().openInputStream(uri_image);//new  FileInputStream(new File(uri_image.getPath()));
+                    OutputStream out = socket.getOutputStream();
+                    //
+                    byte[] buf = new byte[8192];
+                    int len = 0;
+                    while ((len = in.read(buf)) != -1) {
+                        out.write(buf, 0, len);
                     }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    //
+                    out.close();
+                    in.close();
+
+                    String[] marr = contains_o.split(",");
+
+                    json = new JSONObject();
+                    json.put("type", "new");
+                    json.put("name", nome);
+                    json.put("city", cidade);
+                    json.put("lat", lat);
+                    json.put("long", longi);
+                    json.put("contains", Arrays.asList(marr));
+
+                    socket_udp = new DatagramSocket();
+                    packet = new DatagramPacket(json.toJSONString().getBytes(),
+                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
+                    socket_udp.send(packet);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }).start();
+            }
+        }).start();
 
-            String [] marr = contains_o.split(",");
-
-            JSONObject json = new JSONObject();
-            json.put("type", "new");
-            json.put("name", nome);
-            json.put("city", cidade);
-            json.put("lat", lat);
-            json.put("long", longi);
-            json.put("contains", Arrays.asList(marr));
-            //
-            DatagramSocket socket_udp = new DatagramSocket();
-            DatagramPacket packet;
-            packet = new DatagramPacket(json.toJSONString().getBytes(),
-                    json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-            socket_udp.send(packet);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override
