@@ -63,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int MAX_DPACK_SIZE = 256;
     private HashMap<String, Boolean> last_search;
     private static final int ITEMS_REQUEST = 1;
+    private ArrayList<Marker> mMarkers;
 
     private static String my_ip = "192.168.2.112";
 
@@ -286,6 +287,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     input_sock = new String(packet.getData(), 0, packet.getLength());
                     jsonarray = new JSONArray(input_sock);
 
+                    //clear all
+
+                    for (Marker marker: mMarkers)
+                    {
+                        marker.remove();
+                    }
+                    mMarkers.clear();
+
                     //show new locations on map
 
                     for(int x = 0; x < jsonarray.length(); x++)
@@ -302,7 +311,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                         .title((String)o.get("name")));
-                                myNewMarker.setTag(0);
+                                myNewMarker.setTag((Long)o.get("ref"));
                             }
                         });
                     }
@@ -320,17 +329,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(final Marker marker) {
 
         // Retrieve the data from the marker.
-        Integer clickCount = (Integer) marker.getTag();
+        Long ref = (Long) marker.getTag();
 
         // Check if a click count was set, then display the click count.
-        if (clickCount != null) {
+
+        Intent intent = new Intent(MapsActivity.this, InformationActivity.class);
+        intent.putExtra("ref", ref);
+        startActivity(intent);
+
+        /*if (clickCount != null) {
             clickCount = clickCount + 1;
             marker.setTag(clickCount);
             Toast.makeText(this,
                     marker.getTitle() +
                             " has been clicked " + clickCount + " times.",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
