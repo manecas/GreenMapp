@@ -29,6 +29,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -266,39 +271,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void loadNewLocations()
     {
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
-                try {
-                    String command = "search";
+            public void run()
+            {
+                try
+                {
                     String input_sock;
-                    Log.d("log-print","a");
-                    DatagramSocket socket = new DatagramSocket();
+                    JSONArray jsonarray;
+                    JSONObject json = new JSONObject();
+                    json.put("type", "search");
+                    DatagramSocket socket_udp = new DatagramSocket();
                     DatagramPacket packet;
-                    packet = new DatagramPacket(command.getBytes(),
-                            command.length(), InetAddress.getByName(my_ip), 5600);
-                    socket.send(packet);
+                    packet = new DatagramPacket(json.toJSONString().getBytes(),
+                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
+                    socket_udp.send(packet);
 
-                    Log.d("log-print","b");
                     packet = new DatagramPacket(new byte[MAX_DPACK_SIZE], MAX_DPACK_SIZE);
-                    socket.receive(packet);
-                    input_sock = new String(packet.getData(), 0, packet.getLength());
-                    Log.d("log-print","c");
-                    JSONParser parser = new JSONParser();
-                    JSONObject json = (JSONObject) parser.parse(input_sock);
-                    Log.d("log-print",json.get("name").toString());
-                    Log.d("log-print",json.get("location").toString());
+                    socket_udp.receive(packet);
 
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
+                    input_sock = new String(packet.getData(), 0, packet.getLength());
+                    jsonarray = new JSONArray(input_sock);
+
+                    //
+
+                    //show new locations on map
+
+                    for(int x = 0; x < jsonarray.length(); x++)
+                    {
+                        JSONObject o = ((JSONObject) jsonarray.get(x));
+                        Marker mSydney;
+                        mSydney = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
+                                .title("Sydney"));
+                        mSydney.setTag(0);
+                    }
+
+                }
+                catch (IOException | JSONException e)
+                {
                     e.printStackTrace();
                 }
             }
+
         }).start();
     }
 
