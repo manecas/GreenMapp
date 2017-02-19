@@ -44,11 +44,13 @@ public class OptionActivity extends Activity {
             actionBar.hide();
         options = new HashMap<>();
         loadOptionsFromSharedPreferences();
-
+        loadSavedOptionImages();
         for (Map.Entry<String, Boolean> entry : options.entrySet()) {
             Log.d("oncreate", entry.getKey() + " " + entry.getValue());
         }
+    }
 
+    private void loadSavedOptionImages(){
         if(options.get(WC) == null){
             ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
             (findViewById(R.id.wc)).setAlpha(0.5f);
