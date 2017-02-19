@@ -17,8 +17,7 @@ public class OptionActivity extends Activity {
         if(actionBar != null)
             actionBar.hide();
     }
-
-
+    
     public void OnChangeImage(View v){
 
         switch (v.getId()){
