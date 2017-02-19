@@ -69,14 +69,14 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/wc"
+                    android:src="@drawable/wc"
                     android:id="@+id/icon_1"
                     android:layout_weight="1" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/bancos"
+                    android:src="@drawable/bancos"
                     android:id="@+id/imageView2"
                     android:layout_weight="1" />
 
