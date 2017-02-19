@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
@@ -17,17 +18,21 @@
             android:layout_weight="5"
             android:hint="Some location..." />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GO TO"
-            android:onClick="OnSearchLocation"/>
+            app:srcCompat="@android:drawable/ic_menu_set_as"
+            android:id="@+id/imageButton2"
+            android:layout_weight="1"
+            android:onClick="OnSearchLocation (MapsActivity)" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Options"
-            android:onClick="ShowOptions"/>
+            app:srcCompat="@android:drawable/ic_menu_search"
+            android:id="@+id/imageButton"
+            android:layout_weight="1"
+            android:onClick="ShowOptions (MapsActivity)" />
 
     </LinearLayout>
 
