@@ -47,7 +47,6 @@
                     android:src="@drawable/wc"
                     android:id="@+id/wc"
                     android:onClick="OnChangeImage"
-                    android:alpha="0.5"
                     android:layout_weight="1" />
 
                 <ImageView

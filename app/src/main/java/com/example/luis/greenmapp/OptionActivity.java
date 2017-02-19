@@ -103,7 +103,6 @@ public class OptionActivity extends Activity {
             case R.id.wc:
                 if(options.get(WC) == null){
                     ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
-                    (findViewById(R.id.wc)).setAlpha(1f);
                     options.put(WC, true);
                 }
                 else{
@@ -113,7 +112,6 @@ public class OptionActivity extends Activity {
                     }else{
                         options.remove(WC);
                         ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
-                        (findViewById(R.id.wc)).setAlpha(0.5f);
                     }
                 }
                 break;

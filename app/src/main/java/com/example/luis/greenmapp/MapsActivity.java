@@ -291,11 +291,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     //clear all
 
-                    for (Marker marker: mMarkers)
-                    {
-                        marker.remove();
-                    }
-                    mMarkers.clear();
+                    MapsActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (Marker marker: mMarkers)
+                            {
+                                marker.remove();
+                            }
+                            mMarkers.clear();
+                            mMap.clear();
+                        }
+                    });
 
                     //show new locations on map
 
