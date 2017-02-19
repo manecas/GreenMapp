@@ -351,7 +351,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                         .title((String)o.get("name")));
-                                myNewMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.greenmapp_marker));
+                                myNewMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.greenapp_marker_32));
                                 myNewMarker.setTag(Long.parseLong(((JSONObject)o.get("ref")).get("$numberLong").toString()));
                             }
                         });
@@ -410,12 +410,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
                 try {
                     last_search = (HashMap<String, Boolean>) data.getSerializableExtra("options");
-                    if (last_search != null){
-                        for (Map.Entry<String, Boolean> entry : last_search.entrySet()) {
-                            Log.d("hashmap", entry.getKey() + " " + entry.getValue());
-                        }
-                    }
-
                     if(lastCity != null){
                         loadNewLocations(lastCity);
                     }

@@ -2,7 +2,6 @@ package com.example.luis.greenmapp;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,25 +44,172 @@ public class OptionActivity extends Activity {
         options = new HashMap<>();
         loadOptionsFromSharedPreferences();
         loadSavedOptionImages();
-        for (Map.Entry<String, Boolean> entry : options.entrySet()) {
-            Log.d("oncreate", entry.getKey() + " " + entry.getValue());
-        }
     }
 
     private void loadSavedOptionImages(){
+
         if(options.get(WC) == null){
             ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
-            (findViewById(R.id.wc)).setAlpha(0.5f);
-            options.put(WC, true);
         }
         else{
-            (findViewById(R.id.wc)).setAlpha(1f);
             if(options.get(WC)){
-                ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
-                options.put(WC, false);
+                ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.c_wc);
             }else{
-                options.remove(WC);
                 ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.n_wc);
+            }
+        }
+
+        if(options.get(BANCOS) == null){
+            ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.bancos);
+        }
+        else{
+            if(options.get(BANCOS)){
+                ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.c_bancos);
+            }else{
+                ((ImageView)findViewById(R.id.bancos)).setImageResource(R.drawable.n_bancos);
+            }
+        }
+
+        if(options.get(LIXO) == null){
+            ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.lixo);
+        }
+        else{
+            if(options.get(LIXO)){
+                ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.c_lixo);
+            }else{
+                ((ImageView)findViewById(R.id.lixo)).setImageResource(R.drawable.n_lixo);
+            }
+        }
+
+        if(options.get(ANIMAIS) == null){
+            ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.animais);
+        }
+        else{
+            if(options.get(ANIMAIS)){
+                ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.c_animais);
+            }else{
+                ((ImageView)findViewById(R.id.animais)).setImageResource(R.drawable.n_animais);
+            }
+        }
+
+        if(options.get(MUSCULACAO) == null){
+            ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.musculacao);
+        }
+        else{
+            if(options.get(MUSCULACAO)){
+                ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.c_musculacao);
+            }else{
+                ((ImageView)findViewById(R.id.musculacao)).setImageResource(R.drawable.n_musculacao);
+            }
+        }
+
+        if(options.get(BICICLETAS) == null){
+            ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.byke);
+        }
+        else{
+            if(options.get(BICICLETAS)){
+                ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.c_byke);
+            }else{
+                ((ImageView)findViewById(R.id.bicicletas)).setImageResource(R.drawable.n_byke);
+            }
+        }
+
+        if(options.get(RIO) == null){
+            ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.rio);
+        }
+        else{
+            if(options.get(RIO)){
+                ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.c_rio);
+            }else{
+                ((ImageView)findViewById(R.id.rio)).setImageResource(R.drawable.n_rio);
+            }
+        }
+
+        if(options.get(MAR) == null){
+            ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.mar);
+        }
+        else{
+            if(options.get(MAR)){
+                ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.c_mar);
+            }else{
+                ((ImageView)findViewById(R.id.mar)).setImageResource(R.drawable.n_mar);
+            }
+        }
+
+        if(options.get(CHURRASCO) == null){
+            ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.churrasco);
+        }
+        else{
+            if(options.get(CHURRASCO)){
+                ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.c_churrasco);
+            }else{
+                ((ImageView)findViewById(R.id.churrasco)).setImageResource(R.drawable.n_churrasco);
+            }
+        }
+
+        if(options.get(SOMBRA) == null){
+            ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.sombra);
+        }
+        else{
+            if(options.get(SOMBRA)){
+                ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.c_sombra);
+            }else{
+                ((ImageView)findViewById(R.id.sombra)).setImageResource(R.drawable.n_sombra);
+            }
+        }
+
+        if(options.get(DESPORTO) == null){
+            ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.desporto);
+        }
+        else{
+            if(options.get(DESPORTO)){
+                ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.c_desporto);
+            }else{
+                ((ImageView)findViewById(R.id.desporto)).setImageResource(R.drawable.n_desporto);
+            }
+        }
+
+        if(options.get(CULTURA) == null){
+            ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.cultura);
+        }
+        else{
+            if(options.get(CULTURA)){
+                ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.c_cultura);
+            }else{
+                ((ImageView)findViewById(R.id.cultura)).setImageResource(R.drawable.n_cultura);
+            }
+        }
+
+        if(options.get(FRALDARIO) == null){
+            ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.wcinfantil);
+        }
+        else{
+            if(options.get(FRALDARIO)){
+                ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.c_wcinfantil);
+            }else{
+                ((ImageView)findViewById(R.id.fraldario)).setImageResource(R.drawable.n_fraldario);
+            }
+        }
+
+        if(options.get(DEFICIENTES) == null){
+            ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.deficientes);
+        }
+        else{
+            if(options.get(DEFICIENTES)){
+                ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.c_deficientes);
+            }else{
+                ((ImageView)findViewById(R.id.deficientes)).setImageResource(R.drawable.n_deficientes);
+            }
+        }
+
+        if(options.get(PARQUE_INFANTIL) == null){
+            ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.parquei);
+        }
+        else{
+            if(options.get(PARQUE_INFANTIL)){
+                ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.c_parque);
+            }else{
+                ((ImageView)findViewById(R.id.parquei)).setImageResource(R.drawable.n_parque);
             }
         }
     }
@@ -77,15 +223,26 @@ public class OptionActivity extends Activity {
 
     private void loadOptionsFromSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        for(Map.Entry<String, ?> entry : prefs.getAll().entrySet())
+        for(Map.Entry<String, ?> entry : prefs.getAll().entrySet()) {
             options.put(entry.getKey(), Boolean.parseBoolean(entry.getValue().toString()));
+        }
+
+        for (Map.Entry<String, Boolean> entry : options.entrySet()) {
+            Log.d("loadOptions", entry.getKey() + " " + entry.getValue());
+        }
     }
 
     private void saveOptionsToSharedPreferences(){
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-        for(Map.Entry<String, Boolean> entry : options.entrySet())
+        editor.clear();
+        for(Map.Entry<String, Boolean> entry : options.entrySet()) {
             editor.putBoolean(entry.getKey(), entry.getValue());
+        }
         editor.apply();
+
+        for (Map.Entry<String, Boolean> entry : options.entrySet()) {
+            Log.d("saveOptions", entry.getKey() + " " + entry.getValue());
+        }
     }
 
     public void OnFilterParks(View v){
