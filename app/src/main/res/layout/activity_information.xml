@@ -195,7 +195,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wcinfantil"
+                    android:src="@drawable/fraldario"
                     android:id="@+id/icon_fraldario"
                     android:layout_weight="1" />
 
