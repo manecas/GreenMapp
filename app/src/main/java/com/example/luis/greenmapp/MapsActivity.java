@@ -29,6 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -152,8 +154,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                 List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                Log.d("qqcoisa", addresses.get(0).getLocality());
                 if (addresses.size() > 0)
                     loadNewLocations(addresses.get(0).getLocality());
+                else
+                    Log.d("qqcoisa", "coisa");
 
             }catch(Exception e){
                 e.printStackTrace();
@@ -346,6 +351,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 myNewMarker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                         .title((String)o.get("name")));
+                                myNewMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.greenmapp_marker));
                                 myNewMarker.setTag(Long.parseLong(((JSONObject)o.get("ref")).get("$numberLong").toString()));
                             }
                         });
