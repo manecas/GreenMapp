@@ -23,25 +23,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Nome"
         android:ems="10"
-        android:id="@+id/et_nome" />
+        android:id="@+id/et_nome"
+        android:hint="Nome" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Cidade"
         android:ems="10"
-        android:id="@+id/et_cidade" />
+        android:id="@+id/et_cidade"
+        android:hint="Cidade" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Contem"
         android:ems="10"
-        android:id="@+id/et_contem" />
+        android:id="@+id/et_contem"
+        android:hint="Contem" />
 
     <Button
         android:text="Sugerir"
