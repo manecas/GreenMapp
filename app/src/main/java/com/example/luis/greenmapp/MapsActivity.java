@@ -53,7 +53,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -305,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mSydney = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
                                 .title("Sydney"));
-                        mSydney.setTag(0);
+                        mSydney.setTag((long)o.get("ref"));
                     }
 
                 }
@@ -316,6 +317,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }).start();
+    }
+
+    public boolean onMarkerClick(final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+            Toast.makeText(this,
+                    marker.getTitle() +
+                            " has been clicked " + clickCount + " times.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
     }
 
 
