@@ -53,7 +53,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_PERMISSION_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
@@ -74,75 +74,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         mMap = googleMap;
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+        mMap.setOnMarkerClickListener(this);
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener()
+        {
             @Override
-            public void onCameraMove() {
-                Log.d("onCameraMoveCanceled", "canceled");
+            public void onCameraIdle()
+            {
+                Log.d("idle", "idle");
             }
         });
-//        mMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
-//            @Override
-//            public void onCameraMoveCanceled() {
-//                Log.d("onCameraMoveCanceled", "canceled");
-//                if(last_search != null)
-//                {
-//                    //loadNewLocations();
-//                    Toast.makeText(MapsActivity.this, "Move", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener()
         {
             @Override
             public void onMapLongClick(LatLng latLng)
             {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try
-                        {
-
-                            JSONObject json = new JSONObject();
-                            json.put("type", "pnew");
-                            Log.d("log-print","a");
-                            DatagramSocket socket_udp = new DatagramSocket();
-                            DatagramPacket packet;
-                            Log.d("dgbfhj", json.toJSONString());
-                            Log.d("dgbfhj", json.toString());
-                            packet = new DatagramPacket(json.toJSONString().getBytes(),
-                                    json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                            socket_udp.send(packet);
-
-                            Socket socket;
-                            socket = new Socket(my_ip, 3434);
-
-                            InputStream in = new FileInputStream(new File(getApplicationContext().getFilesDir(), "picture.jpg"));
-                            OutputStream out = socket.getOutputStream();
-                            //
-                            byte[] buf = new byte[8192];
-                            int len = 0;
-                            while ((len = in.read(buf)) != -1)
-                            {
-                                out.write(buf, 0, len);
-                            }
-                            //
-                            out.close();
-                            in.close();
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                //
 
                 Toast.makeText(MapsActivity.this, "Long", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
 
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -293,42 +252,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     socket_udp.receive(packet);
 
                     input_sock = new String(packet.getData(), 0, packet.getLength());
-                    Log.d("Sai do ciclo", input_sock);
                     jsonarray = new JSONArray(input_sock);
 
-                    //
-
                     //show new locations on map
-                    Log.d("Sai do ciclo", "Sai do cliclo");
+
                     for(int x = 0; x < jsonarray.length(); x++)
                     {
                         JSONParser parser = new JSONParser();
                         final JSONObject o = (JSONObject) parser.parse(jsonarray.get(x).toString());
-                        MapsActivity.this.runOnUiThread(new Runnable() {
+
+                        MapsActivity.this.runOnUiThread(new Runnable()
+                        {
                             @Override
-                            public void run() {
+                            public void run()
+                            {
                                 Marker mSydney;
                                 mSydney = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
-                                        .title("Sydney"));
+                                        .title((String)o.get("name")));
                                 mSydney.setTag(0);
-                                Log.d("LatLng", ((double)o.get("lat")) + " ");
                             }
                         });
-
                     }
-                    Log.d("Sai do ciclo", "Sai do cliclo");
 
                 }
-                catch (IOException | JSONException e)
+                catch (IOException | JSONException | ParseException e)
                 {
-                    e.printStackTrace();
-                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
 
         }).start();
+    }
+
+    public boolean onMarkerClick(final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+            Toast.makeText(this,
+                    marker.getTitle() +
+                            " has been clicked " + clickCount + " times.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
     }
 
 
