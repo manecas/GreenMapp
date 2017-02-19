@@ -74,76 +74,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener()
+        {
             @Override
-            public void onCameraMove() {
-                Log.d("onCameraMoveCanceled", "canceled");
+            public void onCameraIdle()
+            {
+                Log.d("idle", "idle");
             }
         });
-//        mMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
-//            @Override
-//            public void onCameraMoveCanceled() {
-//                Log.d("onCameraMoveCanceled", "canceled");
-//                if(last_search != null)
-//                {
-//                    //loadNewLocations();
-//                    Toast.makeText(MapsActivity.this, "Move", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener()
         {
             @Override
             public void onMapLongClick(LatLng latLng)
             {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try
-                        {
-
-                            JSONObject json = new JSONObject();
-                            json.put("type", "pnew");
-                            Log.d("log-print","a");
-                            DatagramSocket socket_udp = new DatagramSocket();
-                            DatagramPacket packet;
-                            Log.d("dgbfhj", json.toJSONString());
-                            Log.d("dgbfhj", json.toString());
-                            packet = new DatagramPacket(json.toJSONString().getBytes(),
-                                    json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                            socket_udp.send(packet);
-
-                            Socket socket;
-                            socket = new Socket(my_ip, 3434);
-
-                            InputStream in = new FileInputStream(new File(getApplicationContext().getFilesDir(), "picture.jpg"));
-                            OutputStream out = socket.getOutputStream();
-                            //
-                            byte[] buf = new byte[8192];
-                            int len = 0;
-                            while ((len = in.read(buf)) != -1)
-                            {
-                                out.write(buf, 0, len);
-                            }
-                            //
-                            out.close();
-                            in.close();
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                //
 
                 Toast.makeText(MapsActivity.this, "Long", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
 
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -283,6 +241,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONArray jsonarray;
                     JSONObject json = new JSONObject();
                     json.put("type", "search");
+                    json.put("city_name", "Coimbra");
                     DatagramSocket socket_udp = new DatagramSocket();
                     DatagramPacket packet;
                     packet = new DatagramPacket(json.toJSONString().getBytes(),
@@ -295,22 +254,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     input_sock = new String(packet.getData(), 0, packet.getLength());
                     jsonarray = new JSONArray(input_sock);
 
-                    //
-
                     //show new locations on map
 
                     for(int x = 0; x < jsonarray.length(); x++)
                     {
-                        JSONObject o = ((JSONObject) jsonarray.get(x));
-                        Marker mSydney;
-                        mSydney = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
-                                .title("Sydney"));
-                        mSydney.setTag((long)o.get("ref"));
+                        JSONParser parser = new JSONParser();
+                        final JSONObject o = (JSONObject) parser.parse(jsonarray.get(x).toString());
+
+                        MapsActivity.this.runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                Marker mSydney;
+                                mSydney = mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng((double)o.get("lat"), (double)o.get("long")))
+                                        .title((String)o.get("name")));
+                                mSydney.setTag(0);
+                            }
+                        });
                     }
 
                 }
-                catch (IOException | JSONException e)
+                catch (IOException | JSONException | ParseException e)
                 {
                     e.printStackTrace();
                 }
@@ -343,70 +309,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ShowOptions(View view)
     {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.activity_information);
-
-//        Button dialogButtonOk = (Button) dialog.findViewById(R.id.button_ok);
-//        dialogButtonOk.setOnClickListener(new View.OnClickListener()
-//        {
+        startActivity(new Intent(MapsActivity.this, InformationActivity.class));
+//        loadNewLocations();
+//        new Thread(new Runnable() {
 //            @Override
-//            public void onClick(View v)
-//            {
+//            public void run() {
+//
+//                try {
+//                    JSONObject json = new JSONObject();
+//                    json.put("type", "see");
+//                    Log.d("log-print","a");
+//                    DatagramSocket socket_udp = new DatagramSocket();
+//                    DatagramPacket packet;
+//                    Log.d("dgbfhj", json.toJSONString());
+//                    Log.d("dgbfhj", json.toString());
+//                    packet = new DatagramPacket(json.toJSONString().getBytes(),
+//                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
+//                    socket_udp.send(packet);
+//                    //
+//                    Socket socket;
+//                    socket = new Socket(my_ip, 3434);
+//
+//                    File file = new File(getApplicationContext().getFilesDir(), "picture.jpg");
+//                    if(file.exists())
+//                        file.delete();
+//
+//                    InputStream in = socket.getInputStream();
+//                    FileOutputStream out = openFileOutput("picture.jpg", Activity.MODE_PRIVATE);
+//
+//                    //
+//                    byte[] buf = new byte[8192];
+//                    int len = 0;
+//                    int contador = 0;
+//                    while ((len = in.read(buf)) != -1)
+//                    {
+//                        System.out.println("Recebido o bloco n. " + ++contador + " com " + len + " bytes.");
+//                        out.write(buf, 0, len);
+//                        out.flush();
+//                        System.out.println("Acrescentados " + len + " bytes.");
+//                    }
+//                    //
+//                    out.close();
+//                    in.close();
+//                    Log.d("desfgh", "downloaded");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 //
 //            }
-//        });
-
-        dialog.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    JSONObject json = new JSONObject();
-                    json.put("type", "see");
-                    Log.d("log-print","a");
-                    DatagramSocket socket_udp = new DatagramSocket();
-                    DatagramPacket packet;
-                    Log.d("dgbfhj", json.toJSONString());
-                    Log.d("dgbfhj", json.toString());
-                    packet = new DatagramPacket(json.toJSONString().getBytes(),
-                            json.toJSONString().length(), InetAddress.getByName(my_ip), 5600);
-                    socket_udp.send(packet);
-                    //
-                    Socket socket;
-                    socket = new Socket(my_ip, 3434);
-
-                    File file = new File(getApplicationContext().getFilesDir(), "picture.jpg");
-                    if(file.exists())
-                        file.delete();
-
-                    InputStream in = socket.getInputStream();
-                    FileOutputStream out = openFileOutput("picture.jpg", Activity.MODE_PRIVATE);
-
-                    //
-                    byte[] buf = new byte[8192];
-                    int len = 0;
-                    int contador = 0;
-                    while ((len = in.read(buf)) != -1)
-                    {
-                        System.out.println("Recebido o bloco n. " + ++contador + " com " + len + " bytes.");
-                        out.write(buf, 0, len);
-                        out.flush();
-                        System.out.println("Acrescentados " + len + " bytes.");
-                    }
-                    //
-                    out.close();
-                    in.close();
-                    Log.d("desfgh", "downloaded");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
+//        }).start();
     }
 
 }
