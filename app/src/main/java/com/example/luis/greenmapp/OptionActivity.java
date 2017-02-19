@@ -4,13 +4,18 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class OptionActivity extends Activity {
+
+    public static final String PREFS_NAME = "OPTIONS_HASHMAP";
 
     public static final String WC = "WC";
     public static final String BANCOS = "BANCOS";
@@ -38,6 +43,27 @@ public class OptionActivity extends Activity {
         if(actionBar != null)
             actionBar.hide();
         options = new HashMap<>();
+        loadOptionsFromSharedPreferences();
+
+        for (Map.Entry<String, Boolean> entry : options.entrySet()) {
+            Log.d("oncreate", entry.getKey() + " " + entry.getValue());
+        }
+
+        if(options.get(WC) == null){
+            ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
+            (findViewById(R.id.wc)).setAlpha(0.5f);
+            options.put(WC, true);
+        }
+        else{
+            (findViewById(R.id.wc)).setAlpha(1f);
+            if(options.get(WC)){
+                ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.wc);
+                options.put(WC, false);
+            }else{
+                options.remove(WC);
+                ((ImageView)findViewById(R.id.wc)).setImageResource(R.drawable.n_wc);
+            }
+        }
     }
 
     private void finishWithResult() {
@@ -47,9 +73,23 @@ public class OptionActivity extends Activity {
         finish();
     }
 
+    private void loadOptionsFromSharedPreferences(){
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        for(Map.Entry<String, ?> entry : prefs.getAll().entrySet())
+            options.put(entry.getKey(), Boolean.parseBoolean(entry.getValue().toString()));
+    }
+
+    private void saveOptionsToSharedPreferences(){
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        for(Map.Entry<String, Boolean> entry : options.entrySet())
+            editor.putBoolean(entry.getKey(), entry.getValue());
+        editor.apply();
+    }
+
     public void OnFilterParks(View v){
         switch (v.getId()){
             case R.id.btnFilter:
+                saveOptionsToSharedPreferences();
                 finishWithResult();
                 break;
         }
